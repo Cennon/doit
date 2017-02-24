@@ -10,31 +10,25 @@ import UIKit
 
 class CompleteTaskViewController: UIViewController {
 
-    var task = Task()
-    var previousVC = TasksViewController()
-    
+    var task : Task? = nil
+
     @IBOutlet var taskLabel: UILabel!
     
-    
     @IBAction func completeButton(_ sender: Any) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        // Delete item, then reload table, then resend user back
-        
-        // Add task to array in previous View Controller
-        
-        previousVC.tasks.remove(at: previousVC.selectedIndex)
-        previousVC.tableView.reloadData()
+        context.delete(task!)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
         navigationController!.popViewController(animated: true)
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if task.important {
-            taskLabel.text = "❗️\(task.name)"
+        if task!.important {
+            taskLabel.text = "❗️\(task!.name!)"
         } else {
-            taskLabel.text = task.name
+            taskLabel.text = task!.name!
         }
         
         // Do any additional setup after loading the view.
